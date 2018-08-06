@@ -1,7 +1,7 @@
 sparkles-decorators
 ==============================================================================
 
-[Short description of the addon.]
+This addon provides decorators for Sparkles/Glimmer components to handle arguments in a nice way.
 
 Installation
 ------------------------------------------------------------------------------
@@ -14,15 +14,65 @@ ember install sparkles-decorators
 Usage
 ------------------------------------------------------------------------------
 
-[Longer description of how to use the addon in apps.]
+In your component:
 
+```ts
+// src/ui/components/my-component/component.ts
+import Component from 'sparkles-component';
+import { arg } from 'sparkles-decorators';
+
+export default class MyComponent extends Component {
+  @arg({default: 'bar'}) foo!: string;
+}
+```
+
+```hbs
+{{! src/ui/components/my-component/template.hbs}}
+{{this.foo}}
+```
+
+```hbs
+{{! src/ui/routes/application/template.hbs}}
+
+<MyComponent /> {{! prints 'bar'}}
+```
+
+Use the `@arg` decorator to bind properties to arguments (one-way). You can pass a default value (or function) which will be assigned to the property if none is set. 
+
+You can also specify the name of your argument (if property and name are different):
+
+```ts
+export default class MyComponent extends Component {
+  @arg({name: 'foo'}) bam!: string;
+}
+```
+
+```hbs
+{{! src/ui/components/my-component/template.hbs}}
+{{this.bam}}
+```
+
+```hbs
+{{! src/ui/routes/application/template.hbs}}
+
+<MyComponent @foo='bar'/> {{! prints 'bar'}}
+```
+
+### API
+
+```
+@arg(options)
+```
+
+**options.name** (optional) - the name of the argument<br>
+**options.default** (optional) - the default value or function
 
 Contributing
 ------------------------------------------------------------------------------
 
 ### Installation
 
-* `git clone <repository-url>`
+* `git clone https://github.com/gossi/sparkles-decorators`
 * `cd sparkles-decorators`
 * `yarn install`
 
