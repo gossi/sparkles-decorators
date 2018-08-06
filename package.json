@@ -1,13 +1,13 @@
 {
   "name": "sparkles-decorators",
-  "version": "0.0.0",
-  "description": "The default blueprint for ember-cli addons.",
+  "version": "0.0.1",
+  "description": "Decorators for Sparkles/Glimmer Components ",
   "keywords": [
     "ember-addon"
   ],
-  "repository": "",
   "license": "MIT",
-  "author": "",
+  "author": "Thomas Gossmann",
+  "repository": "https://github.com/gossi/sparkles-decorators",
   "directories": {
     "doc": "doc",
     "test": "tests"
@@ -17,9 +17,7 @@
     "lint:js": "eslint .",
     "start": "ember serve",
     "test": "ember test",
-    "test:all": "ember try:each",
-    "prepublishOnly": "ember ts:precompile",
-    "postpublish": "ember ts:clean"
+    "test:all": "ember try:each"
   },
   "dependencies": {
     "ember-cli-babel": "^6.16.0",
