@@ -1,4 +1,4 @@
-type ArgOptions = {
+interface ArgOptions {
   /**
    * Argument name this.args[name] (if not provided the property name will be used)
    */
@@ -8,7 +8,7 @@ type ArgOptions = {
    * Default value for that argument. If this is a function, it will be executed in the context of the component.
    */
   default?: any;
-};
+}
 
 /**
  * Maps arguments to properties (with different name) and can provide default values.
@@ -16,4 +16,5 @@ type ArgOptions = {
  * @param options
  */
 export function arg(options?: ArgOptions): PropertyDescriptor;
+export function arg(...args: any[]): any;
 
