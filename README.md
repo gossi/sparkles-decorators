@@ -3,6 +3,8 @@ sparkles-decorators
 
 This addon provides decorators for Sparkles/Glimmer components to handle arguments in a nice way.
 
+[Sparkle Components](https://github.com/rwjblue/sparkles-component) is a wrapper to Glimmer Components to use them in ember projects for early adopters.
+
 Installation
 ------------------------------------------------------------------------------
 
