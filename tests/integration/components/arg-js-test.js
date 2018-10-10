@@ -54,6 +54,21 @@ module('arg: js', function (hooks) {
     assert.dom('p').hasText('');
   });
 
+  test('argument default initializer', async function (assert) {
+    this.owner.register('template:components/under-test', hbs`
+      <span>{{this.foo}}</span>
+      <p>{{@foo}}</p>
+    `);
+    class UnderTest extends SparklesComponent {
+      @arg foo = 'bar';
+    }
+    this.owner.register('component:under-test', UnderTest);
+
+    await render(hbs`<UnderTest/>`);
+    assert.dom('span').hasText('bar');
+    assert.dom('p').hasText('');
+  });
+
   test('argument default value as function', async function (assert) {
     this.owner.register('template:components/under-test', hbs`
       <span>{{this.foo}}</span>
@@ -73,7 +88,44 @@ module('arg: js', function (hooks) {
     assert.dom('p').hasText('');
   });
 
+  test('argument default initializer as function', async function (assert) {
+    this.owner.register('template:components/under-test', hbs`
+      <span>{{this.foo}}</span>
+      <p>{{@foo}}</p>
+    `);
+    class UnderTest extends SparklesComponent {
+      @arg foo = function () {
+        return 'bar';
+      };
+    }
+    this.owner.register('component:under-test', UnderTest);
+
+    await render(hbs`<UnderTest/>`);
+    assert.dom('span').hasText('bar');
+    assert.dom('p').hasText('');
+  });
+
   test('argument default value as method', async function (assert) {
+    this.owner.register('template:components/under-test', hbs`
+      <span>{{this.foo}}</span>
+      <p>{{@foo}}</p>
+    `);
+    class UnderTest extends SparklesComponent {
+      bar = 'bar';
+      @arg({
+        default: function () {
+          return this.bar;
+        }
+      }) foo;
+    }
+    this.owner.register('component:under-test', UnderTest);
+
+    await render(hbs`<UnderTest/>`);
+    assert.dom('span').hasText('bar');
+    assert.dom('p').hasText('');
+  });
+
+  test('argument default initializer as method', async function (assert) {
     this.owner.register('template:components/under-test', hbs`
       <span>{{this.foo}}</span>
       <p>{{@foo}}</p>

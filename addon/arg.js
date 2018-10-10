@@ -1,18 +1,33 @@
 import { tracked } from 'sparkles-component';
+import { decoratorWithParams } from '@ember-decorators/utils/decorator';
 
-export function arg(...args) {
-  if (args.length === 1) {
-    return function(target, key, descriptor) {
-      return arg(target, key, descriptor, args[0]);
-    };
-  }
-  let [target, key, descriptor, config] = args;
-  let name = config && config.name ? config.name : key;
+export const arg = decoratorWithParams(function (target, key, descriptor, params) {
+  const config = params[0] || {};
+  let name = config.name ? config.name : key;
+  let lastArgValue;
+  const values = new WeakMap();
 
   descriptor = descriptor || {};
+
+  if ('value' in descriptor && descriptor.value !== null && !config.default) {
+    config.default = descriptor.value;
+  }
+
+  if ('initializer' in descriptor && descriptor.initializer !== null && !config.default) {
+    config.initializer = descriptor.initializer;
+  }
+
+  delete descriptor.value;
+  delete descriptor.initializer;
+  delete descriptor.writable;
+
   descriptor.get = function () {
-    if (this.args && this.args[name]) {
+    if (this.args && this.args[name] && this.args[name] !== lastArgValue) {
       return this.args[name];
+    }
+
+    if (values.has(this)) {
+      return values.get(this);
     }
 
     if (config.default) {
@@ -21,12 +36,24 @@ export function arg(...args) {
       }
       return config.default;
     }
+
+    if (config.initializer) {
+      let init = config.initializer();
+
+      if (typeof(init) === 'function') {
+        init = init.call(this);
+      }
+
+      return init;
+    }
   };
 
-  // this will confuse @tracked - so remove it for now
-  if ('initializer' in descriptor) {
-    delete descriptor.initializer;
-  }
+  descriptor.set = function(value) {
+    if (values.has(this)) {
+      lastArgValue = this.args && this.args[name] ? this.args[name] : undefined;
+    }
+    values.set(this, value);
+  };
 
-  return tracked(target, key, descriptor, 'args');
-}
+  return tracked('args')(target, key, descriptor);
+});
