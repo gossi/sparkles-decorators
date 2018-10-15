@@ -3,7 +3,7 @@ sparkles-decorators
 
 This addon provides decorators for Sparkles/Glimmer components to handle arguments in a nice way.
 
-[Sparkle Components](https://github.com/rwjblue/sparkles-component) is a wrapper to Glimmer Components to use them in ember projects for early adopters.
+[Sparkle Components](https://github.com/rwjblue/sparkles-component) is a proof-of-concept to Glimmer Components to use them in ember projects for early adopters.
 
 Installation
 ------------------------------------------------------------------------------
@@ -23,8 +23,17 @@ In your component:
 import Component from 'sparkles-component';
 import { arg } from 'sparkles-decorators';
 
-export default class MyComponent extends Component {
+interface Args {
+  foo?: string;
+  bar?: string;
+}
+
+export default class MyComponent extends Component<Args> {
+  // default using object descriptor
   @arg({default: 'bar'}) foo!: string;
+
+  // default using initializer
+  @arg bar!: string = 'baz';
 }
 ```
 
@@ -39,7 +48,7 @@ export default class MyComponent extends Component {
 <MyComponent /> {{! prints 'bar'}}
 ```
 
-Use the `@arg` decorator to bind properties to arguments (one-way). You can pass a default value (or function) which will be assigned to the property if none is set. 
+Use the `@arg` decorator to bind properties to arguments (one-way). If an initializer is present, that will be used for your default value. Alternatively, you can pass a default value (or function) in the descriptor object which will be assigned to the property if none is set.
 
 You can also specify the name of your argument (if property and name are different):
 
