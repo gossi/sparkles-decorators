@@ -17,3 +17,4 @@ interface ArgOptions {
  */
 export function arg(options?: ArgOptions): PropertyDescriptor;
 export function arg(name?: string): any;
+export function arg(...args: any[]): any;
