@@ -7,7 +7,7 @@ import hbs from 'htmlbars-inline-precompile';
 import 'qunit-dom';
 import { guidFor } from '@ember/object/internals';
 
-module('arg: ts', function (hooks) {
+module('Integration | @arg: ts', function (hooks) {
   setupRenderingTest(hooks);
 
   test('argument as property', async function (assert) {

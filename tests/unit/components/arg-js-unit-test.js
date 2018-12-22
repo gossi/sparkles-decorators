@@ -1,0 +1,87 @@
+import SparklesComponent from 'sparkles-component';
+import { arg } from 'sparkles-decorators';
+import { module, test } from 'qunit';
+import { setupTest } from 'ember-qunit';
+import 'qunit-dom';
+
+module('Unit | @arg: js', function (hooks) {
+  setupTest(hooks);
+
+  test('blank @arg', (assert) => {
+    class TestComponent extends SparklesComponent {
+      @arg foo;
+    }
+
+    const cls = new TestComponent({ foo: 'bar' });
+    assert.equal(cls.foo, 'bar');
+  });
+
+  test('@arg with default value', (assert) => {
+    class TestComponent extends SparklesComponent {
+      @arg foo = 'blubb';
+    }
+
+    const cls = new TestComponent({ foo: 'bar' });
+    assert.equal(cls.foo, 'bar');
+  });
+
+  test('@arg with fallback to default', (assert) => {
+    class TestComponent extends SparklesComponent {
+      @arg foo = 'blubb';
+    }
+
+    const cls = new TestComponent({});
+    assert.equal(cls.foo, 'blubb');
+  });
+
+  test('@arg renamed', (assert) => {
+    class TestComponent extends SparklesComponent {
+      @arg('foo') bam;
+    }
+
+    const cls = new TestComponent({foo: 'blubb'});
+    assert.equal(cls.bam, 'blubb');
+  });
+
+  test('@arg renamed (config)', (assert) => {
+    class TestComponent extends SparklesComponent {
+      @arg({name: 'foo'}) bam;
+    }
+
+    const cls = new TestComponent({foo: 'blubb'});
+    assert.equal(cls.bam, 'blubb');
+  });
+
+  test('@arg with fallback to default (config)', (assert) => {
+    class TestComponent extends SparklesComponent {
+      @arg({default: 'blubb'}) foo;
+    }
+
+    const cls = new TestComponent({});
+    assert.equal(cls.foo, 'blubb');
+  });
+
+  test('@arg with fallback to default function (config)', (assert) => {
+    class TestComponent extends SparklesComponent {
+      @arg({
+        default: function () {
+          return 'blubb';
+        }
+      }) foo;
+    }
+
+    const cls = new TestComponent({});
+    assert.equal(cls.foo, 'blubb');
+  });
+
+  test('@arg with fallback to default function', (assert) => {
+    class TestComponent extends SparklesComponent {
+      @arg foo = function () {
+        return 'blubb';
+      };
+    }
+
+    const cls = new TestComponent({});
+    assert.equal(cls.foo, 'blubb');
+  });
+});

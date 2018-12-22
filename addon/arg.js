@@ -1,24 +1,23 @@
 import { tracked } from 'sparkles-component';
 import { decoratorWithParams } from '@ember-decorators/utils/decorator';
 
-export const arg = decoratorWithParams(function (target, key, descriptor, params) {
-  const config = params[0] || {};
-  let name = config.name ? config.name : key;
+export const arg = decoratorWithParams((desc, params = []) => {
+  const config = typeof(params[0]) === 'string' ? {name: params[0]} : params[0] || {};
+  let name = config.name ? config.name : desc.key;
   let lastArgValue;
   const values = new WeakMap();
-
-  descriptor = descriptor || {};
+  const descriptor = { ...desc.descriptor };
 
   if ('value' in descriptor && descriptor.value !== null && !config.default) {
     config.default = descriptor.value;
   }
 
-  if ('initializer' in descriptor && descriptor.initializer !== null && !config.default) {
-    config.initializer = descriptor.initializer;
+  if ('initializer' in desc && desc.initializer !== null && !config.default) {
+    config.initializer = desc.initializer;
   }
 
+  delete desc.initializer;
   delete descriptor.value;
-  delete descriptor.initializer;
   delete descriptor.writable;
 
   descriptor.get = function () {
@@ -55,5 +54,14 @@ export const arg = decoratorWithParams(function (target, key, descriptor, params
     values.set(this, value);
   };
 
-  return tracked('args')(target, key, descriptor);
+  desc.kind = 'method';
+  desc.placement = 'prototype';
+
+  desc.finisher = target => {
+    Object.defineProperty(target.prototype, desc.key, tracked('args')(target, desc.key, descriptor));
+
+    return target;
+  };
+
+  return desc;
 });

@@ -1,20 +1,16 @@
-sparkles-decorators
-==============================================================================
+# sparkles-decorators
 
 This addon provides decorators for Sparkles/Glimmer components to handle arguments in a nice way.
 
 [Sparkle Components](https://github.com/rwjblue/sparkles-component) is a proof-of-concept to Glimmer Components to use them in ember projects for early adopters.
 
-Installation
-------------------------------------------------------------------------------
+## Installation
 
 ```
 ember install sparkles-decorators
 ```
 
-
-Usage
-------------------------------------------------------------------------------
+## Usage
 
 In your component:
 
@@ -56,6 +52,11 @@ You can also specify the name of your argument (if property and name are differe
 export default class MyComponent extends Component {
   @arg({name: 'foo'}) bam!: string;
 }
+
+// shorthand code (since 0.0.3):
+export default class MyComponent extends Component {
+  @arg('foo') bam!: string;
+}
 ```
 
 ```hbs
@@ -71,41 +72,22 @@ export default class MyComponent extends Component {
 
 ### API
 
+#### aliased
 ```
-@arg(options)
+@arg(name?)
+```
+
+**name** (optional) - the name of the argument
+
+#### config options
+
+```
+@arg(options?)
 ```
 
 **options.name** (optional) - the name of the argument<br>
 **options.default** (optional) - the default value or function
 
-Contributing
-------------------------------------------------------------------------------
-
-### Installation
-
-* `git clone https://github.com/gossi/sparkles-decorators`
-* `cd sparkles-decorators`
-* `yarn install`
-
-### Linting
-
-* `yarn lint:js`
-* `yarn lint:js --fix`
-
-### Running tests
-
-* `ember test` – Runs the test suite on the current Ember version
-* `ember test --server` – Runs the test suite in "watch mode"
-* `ember try:each` – Runs the test suite against multiple Ember versions
-
-### Running the dummy application
-
-* `ember serve`
-* Visit the dummy application at [http://localhost:4200](http://localhost:4200).
-
-For more information on using ember-cli, visit [https://ember-cli.com/](https://ember-cli.com/).
-
-License
-------------------------------------------------------------------------------
+## License
 
 This project is licensed under the [MIT License](LICENSE.md).

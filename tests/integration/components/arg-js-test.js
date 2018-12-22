@@ -6,7 +6,7 @@ import { render } from '@ember/test-helpers';
 import hbs from 'htmlbars-inline-precompile';
 import 'qunit-dom';
 
-module('arg: js', function (hooks) {
+module('Integration | @arg: js', function (hooks) {
   setupRenderingTest(hooks);
 
   test('argument as property', async function (assert) {
