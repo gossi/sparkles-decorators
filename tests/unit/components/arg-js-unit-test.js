@@ -3,6 +3,7 @@ import { arg } from 'sparkles-decorators';
 import { module, test } from 'qunit';
 import { setupTest } from 'ember-qunit';
 import 'qunit-dom';
+import { guidFor } from '@ember/object/internals';
 
 module('Unit | @arg: js', function (hooks) {
   setupTest(hooks);
@@ -83,5 +84,16 @@ module('Unit | @arg: js', function (hooks) {
 
     const cls = new TestComponent({});
     assert.equal(cls.foo, 'blubb');
+  });
+
+  test('guid shall be guid', assert => {
+    class TestComponent extends SparklesComponent {
+      @arg id = guidFor(this);
+    }
+
+    const clsA = new TestComponent();
+    const clsB = new TestComponent();
+
+    assert.notEqual(clsA.id, clsB.id);
   });
 });

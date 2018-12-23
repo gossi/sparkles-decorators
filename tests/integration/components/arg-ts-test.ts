@@ -177,4 +177,18 @@ module('Integration | @arg: ts', function (hooks) {
     assert.dom('span').hasText('baz');
     assert.dom('p').hasText('baz');
   });
+
+  test('guid shall be guid', async function (assert) {
+    this.owner.register('template:components/under-test', hbs`
+      <span data-test-under-id>{{this.id}}</span>
+    `);
+    class UnderTest extends SparklesComponent {
+      @arg id = guidFor(this);
+    }
+    this.owner.register('component:under-test', UnderTest);
+
+    await render(hbs`<UnderTest/><UnderTest/>`);
+    const spans = document.querySelectorAll('[data-test-under-id]');
+    assert.notEqual(spans[0].textContent, spans[1].textContent);
+  });
 });

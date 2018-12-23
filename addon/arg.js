@@ -37,7 +37,9 @@ export const arg = decoratorWithParams((desc, params = []) => {
     }
 
     if (config.initializer) {
-      let init = config.initializer();
+      let init = typeof (config.initializer) === 'function'
+        ? config.initializer.call(this)
+        : config.initializer;
 
       if (typeof(init) === 'function') {
         init = init.call(this);
