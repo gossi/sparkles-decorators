@@ -58,12 +58,7 @@ export const arg = decoratorWithParams((desc, params = []) => {
 
   desc.kind = 'method';
   desc.placement = 'prototype';
+  desc.descriptor = descriptor;
 
-  desc.finisher = target => {
-    Object.defineProperty(target.prototype, desc.key, tracked('args')(target, desc.key, descriptor));
-
-    return target;
-  };
-
-  return desc;
+  return tracked('args')(desc, params)
 });
